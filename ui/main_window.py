@@ -20,6 +20,7 @@ from backend.credential_service import (
     delete_credential,
     update_credential
 )
+from PyQt6.QtGui import QGuiApplication
 
 
 
