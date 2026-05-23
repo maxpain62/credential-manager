@@ -37,7 +37,7 @@ class AddCredentialDialog(QDialog):
         super().__init__()
 
         self.setWindowTitle("Add New Credential")
-        self.setGeometry(300, 300, 350, 200)
+        self.setGeometry(300, 300, 550, 400)
 
         # Inputs
         self.website_input = QLineEdit()
@@ -430,7 +430,7 @@ class MainWindow(QWidget):
         super().__init__()
 
         self.setWindowTitle("Credential Manager")
-        self.setGeometry(200, 200, 400, 300)
+        self.setGeometry(200, 200, 900, 700)
 
         # Temporary credential storage
         self.credentials = {}
