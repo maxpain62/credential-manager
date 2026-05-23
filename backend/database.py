@@ -1,7 +1,19 @@
 import sqlite3
 from pathlib import Path
 
-DB_PATH = Path("data/credentials.db")
+APP_DIR = (
+    Path.home()
+    / ".local"
+    / "share"
+    / "credential-manager"
+)
+
+APP_DIR.mkdir(
+    parents=True,
+    exist_ok=True
+)
+
+DB_PATH = APP_DIR / "credentials.db"
 
 
 def get_connection():

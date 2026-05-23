@@ -1,8 +1,19 @@
 from cryptography.fernet import Fernet
 from pathlib import Path
 
+APP_DIR = (
+    Path.home()
+    / ".local"
+    / "share"
+    / "credential-manager"
+)
 
-KEY_FILE = Path("secret.key")
+APP_DIR.mkdir(
+    parents=True,
+    exist_ok=True
+)
+
+KEY_FILE = APP_DIR / "secret.key"
 
 
 def load_or_create_key():
