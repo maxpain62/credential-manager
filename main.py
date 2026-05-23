@@ -1,6 +1,8 @@
 from PyQt6.QtWidgets import QApplication
 from ui.main_window import MainWindow
 from backend.database import create_table
+from PyQt6.QtGui import QGuiApplication
+
 
 import sys
 

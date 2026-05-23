@@ -241,6 +241,34 @@ class AddCredentialDialog(QDialog):
 
 class MainWindow(QWidget):
 
+    def copy_username(self):
+        username = self.username_input.text()
+
+        if username:
+            clipboard = QGuiApplication.clipboard()
+
+            clipboard.setText(username)
+
+            QMessageBox.information(
+                self,
+                "Copied",
+                "Username copied to clipboard"
+            )
+    
+    def copy_password(self):
+        password = self.password_input.text()
+
+        if password:
+            clipboard = QGuiApplication.clipboard()
+
+            clipboard.setText(password)
+
+            QMessageBox.information(
+                self,
+                "Copied",
+                "Password copied to clipboard"
+            )
+
     def edit_selected_credential(self):
         selected_website = (
             self.website_dropdown.currentText()
@@ -435,6 +463,14 @@ class MainWindow(QWidget):
             "Show Password"
         )
 
+        self.copy_username_button = QPushButton(
+            "Copy Username"
+        )
+
+        self.copy_password_button = QPushButton(
+            "Copy Password"
+        )
+
         self.delete_button = QPushButton(
             "Delete Credential"
         )
@@ -450,6 +486,14 @@ class MainWindow(QWidget):
         # Actions
         self.show_button.clicked.connect(
             self.toggle_password
+        )
+
+        self.copy_username_button.clicked.connect(
+            self.copy_username
+        )
+
+        self.copy_password_button.clicked.connect(
+            self.copy_password
         )
 
         self.delete_button.clicked.connect(
@@ -479,11 +523,15 @@ class MainWindow(QWidget):
         layout.addWidget(QLabel("Username"))
         layout.addWidget(self.username_input)
 
+        layout.addWidget(self.copy_username_button)
+
         layout.addWidget(QLabel("Password"))
         layout.addWidget(self.password_input)
+        layout.addWidget(self.copy_password_button)
 
         layout.addWidget(QLabel("Metadata"))
         layout.addWidget(self.metadata_table)
+
 
         layout.addWidget(self.show_button)
 
