@@ -21,6 +21,7 @@ from backend.credential_service import (
     update_credential
 )
 from PyQt6.QtGui import QGuiApplication
+from PyQt6.QtGui import QIcon
 
 
 
@@ -460,17 +461,46 @@ class MainWindow(QWidget):
         )
 
         # Buttons
-        self.show_button = QPushButton(
+        """self.show_button = QPushButton(
+            "Show Password"
+        )"""
+        self.show_button = QPushButton()
+
+        self.show_button.setToolTip(
             "Show Password"
         )
 
-        self.copy_username_button = QPushButton(
+        self.show_button.setFixedSize(32, 32)
+
+        self.show_button.setIcon(
+            QIcon.fromTheme("visibility")
+        )
+
+
+        self.copy_username_button = QPushButton()
+
+        self.copy_username_button.setIcon(
+            QIcon.fromTheme("edit-copy")
+        )
+
+        self.copy_username_button.setToolTip(
             "Copy Username"
         )
 
-        self.copy_password_button = QPushButton(
+        self.copy_username_button.setFixedSize(32, 32)
+
+
+        self.copy_password_button = QPushButton()
+
+        self.copy_password_button.setIcon(
+            QIcon.fromTheme("edit-copy")
+        )
+
+        self.copy_password_button.setToolTip(
             "Copy Password"
         )
+
+        self.copy_password_button.setFixedSize(32, 32)
 
         self.delete_button = QPushButton(
             "Delete Credential"
@@ -520,15 +550,26 @@ class MainWindow(QWidget):
         layout.addWidget(self.website_dropdown)
 
         layout.addWidget(self.add_website_button)
+        
+        # Username row
+        username_layout = QHBoxLayout()
+
+        username_layout.addWidget(self.username_input)
+        username_layout.addWidget(self.copy_username_button)
+
+        # Password row
+        password_layout = QHBoxLayout()
+
+        password_layout.addWidget(self.password_input)
+
+        password_layout.addWidget(self.show_button)
+        password_layout.addWidget(self.copy_password_button)
 
         layout.addWidget(QLabel("Username"))
-        layout.addWidget(self.username_input)
-
-        layout.addWidget(self.copy_username_button)
+        layout.addLayout(username_layout)
 
         layout.addWidget(QLabel("Password"))
-        layout.addWidget(self.password_input)
-        layout.addWidget(self.copy_password_button)
+        layout.addLayout(password_layout)
 
         layout.addWidget(QLabel("Metadata"))
         layout.addWidget(self.metadata_table)
@@ -620,16 +661,51 @@ class MainWindow(QWidget):
 
                 self.metadata_table.insertRow(row)
 
+                # Key column
                 self.metadata_table.setItem(
                     row,
                     0,
                     QTableWidgetItem(key)
                 )
 
-                self.metadata_table.setItem(
+                # Create widget for value + copy button
+                cell_widget = QWidget()
+
+                cell_layout = QHBoxLayout(cell_widget)
+
+                cell_layout.setContentsMargins(5, 0, 5, 0)
+
+                # Value label
+                value_label = QLabel(value)
+
+                # Copy button
+                copy_button = QPushButton()
+
+                copy_button.setIcon(
+                    QIcon.fromTheme("edit-copy")
+                )
+
+                copy_button.setToolTip("Copy")
+                
+
+                copy_button.clicked.connect(
+                    lambda checked=False, v=value:
+                    QGuiApplication.clipboard().setText(v)
+                )
+                copy_button.setFixedSize(28, 28)
+
+                # Add widgets
+                cell_layout.addWidget(value_label)
+
+                cell_layout.addStretch()
+
+                cell_layout.addWidget(copy_button)
+
+                # Set widget into table
+                self.metadata_table.setCellWidget(
                     row,
                     1,
-                    QTableWidgetItem(value)
+                    cell_widget
                 )
 
         else:
@@ -647,8 +723,12 @@ class MainWindow(QWidget):
                 QLineEdit.EchoMode.Normal
             )
 
-            self.show_button.setText(
+            self.show_button.setToolTip(
                 "Hide Password"
+            )
+
+            self.show_button.setIcon(
+                QIcon.fromTheme("visibility-off")
             )
 
         else:
@@ -656,6 +736,10 @@ class MainWindow(QWidget):
                 QLineEdit.EchoMode.Password
             )
 
-            self.show_button.setText(
+            self.show_button.setToolTip(
                 "Show Password"
+            )
+
+            self.show_button.setIcon(
+                QIcon.fromTheme("visibility")
             )
